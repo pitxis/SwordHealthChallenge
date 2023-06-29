@@ -51,16 +51,35 @@ class BreedListViewModel: BreedListViewModelProtocol {
             case .desc:
                 return $0.name > $1.name
             }
-
         }
     }
 
 #if DEBUG
     static let breeds: [BreedModel] = [
-        BreedModel(id: 1, name: "A Name", imageUrl: "URL"),
-        BreedModel(id: 2, name: "B Name", imageUrl: "URL"),
-        BreedModel(id: 3, name: "C Name", imageUrl: "URL"),
-        BreedModel(id: 4, name: "D Name", imageUrl: "URL"),
+        BreedModel(id: 1, name: "A Name",
+                   breedGroup: "A BreedGroup",
+                   origin: "A Origin",
+                   imageUrl: "URL",
+                   category: "A category",
+                   temperament: "A temperament"),
+        BreedModel(id: 2, name: "B Name",
+                   breedGroup: "",
+                   origin: "",
+                   imageUrl: "URL",
+                   category: "",
+                   temperament: ""),
+        BreedModel(id: 3, name: "C Name",
+                   breedGroup: "",
+                   origin: "",
+                   imageUrl: "URL",
+                   category: "",
+                   temperament: ""),
+        BreedModel(id: 4, name: "D Name",
+                   breedGroup: "",
+                   origin: "",
+                   imageUrl: "URL",
+                   category: "",
+                   temperament: "")
     ]
 #endif
 }

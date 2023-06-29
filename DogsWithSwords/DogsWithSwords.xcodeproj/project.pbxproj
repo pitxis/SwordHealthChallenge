@@ -20,10 +20,10 @@
 		3C1454FD2A4B4ABE0051804B /* BreedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1454FC2A4B4ABE0051804B /* BreedListViewModel.swift */; };
 		3C1454FF2A4B4DE90051804B /* BreedsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1454FE2A4B4DE90051804B /* BreedsListCell.swift */; };
 		3C1455012A4B64DC0051804B /* SearchBreedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1455002A4B64DC0051804B /* SearchBreedsView.swift */; };
-		3CB11C952A4C4BAD007568BA /* BreedSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C942A4C4BAD007568BA /* BreedSearchModel.swift */; };
 		3CB11C972A4C4C07007568BA /* BreedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C962A4C4C07007568BA /* BreedSearchViewModel.swift */; };
 		3CB11C992A4C729C007568BA /* BreedSearchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C982A4C729C007568BA /* BreedSearchListCell.swift */; };
 		3CB11C9B2A4C7CF6007568BA /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C9A2A4C7CF6007568BA /* BreedDetailView.swift */; };
+		3CB11C9E2A4DCCA9007568BA /* MovableResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C9D2A4DCCA9007568BA /* MovableResizableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,10 +60,10 @@
 		3C1454FC2A4B4ABE0051804B /* BreedListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListViewModel.swift; sourceTree = "<group>"; };
 		3C1454FE2A4B4DE90051804B /* BreedsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListCell.swift; sourceTree = "<group>"; };
 		3C1455002A4B64DC0051804B /* SearchBreedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBreedsView.swift; sourceTree = "<group>"; };
-		3CB11C942A4C4BAD007568BA /* BreedSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchModel.swift; sourceTree = "<group>"; };
 		3CB11C962A4C4C07007568BA /* BreedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchViewModel.swift; sourceTree = "<group>"; };
 		3CB11C982A4C729C007568BA /* BreedSearchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchListCell.swift; sourceTree = "<group>"; };
 		3CB11C9A2A4C7CF6007568BA /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
+		3CB11C9D2A4DCCA9007568BA /* MovableResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovableResizableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +153,7 @@
 		3C1454F22A4B471A0051804B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3CB11C9C2A4DCC95007568BA /* Common */,
 				3C1454CA2A4B46FF0051804B /* ContentView.swift */,
 				3C1454F32A4B47310051804B /* BreedsView.swift */,
 				3C1454FE2A4B4DE90051804B /* BreedsListCell.swift */,
@@ -174,7 +175,6 @@
 		3C1454F82A4B49BD0051804B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3CB11C942A4C4BAD007568BA /* BreedSearchModel.swift */,
 				3C1454FA2A4B49EC0051804B /* BreedModel.swift */,
 			);
 			path = Models;
@@ -187,6 +187,14 @@
 				3CB11C962A4C4C07007568BA /* BreedSearchViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3CB11C9C2A4DCC95007568BA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				3CB11C9D2A4DCCA9007568BA /* MovableResizableView.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,7 +330,7 @@
 				3C1454CB2A4B46FF0051804B /* ContentView.swift in Sources */,
 				3C1454F42A4B47310051804B /* BreedsView.swift in Sources */,
 				3C1454FB2A4B49EC0051804B /* BreedModel.swift in Sources */,
-				3CB11C952A4C4BAD007568BA /* BreedSearchModel.swift in Sources */,
+				3CB11C9E2A4DCCA9007568BA /* MovableResizableView.swift in Sources */,
 				3CB11C9B2A4C7CF6007568BA /* BreedDetailView.swift in Sources */,
 				3C1454FD2A4B4ABE0051804B /* BreedListViewModel.swift in Sources */,
 				3C1454F72A4B499F0051804B /* BreedDTO.swift in Sources */,

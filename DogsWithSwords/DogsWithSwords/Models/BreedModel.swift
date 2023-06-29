@@ -10,5 +10,9 @@ import Foundation
 struct BreedModel: Identifiable, Hashable {
     let id: Int
     let name: String
+    let breedGroup: String
+    let origin: String
     let imageUrl: String
+    var category: String
+    var temperament: String
 }

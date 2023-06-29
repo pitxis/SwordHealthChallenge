@@ -8,34 +8,51 @@
 import SwiftUI
 
 struct BreedsListCell: View {
+    let id: Int
     let breedName: String
     let style: ListType
+    var animation: Namespace.ID
 
-    init(name breedName: String, style: ListType = .list) {
+    @EnvironmentObject var selectedObject: SelectedObject
+
+    init(id: Int, name breedName: String, nameSpace: Namespace.ID, style: ListType = .list) {
         self.breedName = breedName
         self.style = style
+        self.id = id
+        self.animation = nameSpace
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Image("CuteDog")
-                .resizable()
-                .scaledToFit()
-            VStack {
+        VStack(spacing: 0) {
+            Text(breedName)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text("\(id)")
 
-                ZStack(alignment: .leading) {
-                    Rectangle().foregroundColor(.black.opacity(0.4)).frame(height: style == .list ? 50 : 20)
-                    Text(breedName)
-                        .foregroundColor(.white)
-                        .padding(8)
-                }
+            if !(selectedObject.isShowing && selectedObject.model?.id ?? -1 == id) {
+                Image("CuteDog")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea([.leading, .trailing])
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .cornerRadius(5)
+                    .matchedGeometryEffect(id: "list_\(id)", in: animation)
+            } else {
+                Image("CuteDog")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea([.leading, .trailing])
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .cornerRadius(5)
             }
         }
     }
 }
 
 struct BreedsListCell_Previews: PreviewProvider {
+    @Namespace static var namespace
+
     static var previews: some View {
-        BreedsListCell(name: "Breed Name")
+        BreedsListCell(id: 1, name: "Breed Name", nameSpace: namespace)
+            .environmentObject(SelectedObject())
     }
 }

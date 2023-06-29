@@ -9,20 +9,35 @@ import SwiftUI
 
 struct SearchBreedsView<Model>: View where Model: BreedSearchViewModelProtocol {
     @ObservedObject var vModel: Model
+    @EnvironmentObject var selectedObject: SelectedObject
+    var animation: Namespace.ID
 
-    init(breedSearchViewModel model: Model) {
+    init(breedSearchViewModel model: Model, nameSpace: Namespace.ID) {
         self.vModel = model
+        self.animation = nameSpace
     }
 
     var body: some View {
         NavigationView {
             List {
                 ForEach(vModel.resultsList, id: \.id) { item in
-                    BreedSearchListCell(name: item.name,
-                                        group: item.breedGroup,
-                                        origin: item.origin)
-                    
-                    .listRowSeparator(.hidden)
+                    Button(action: {
+                        self.selectedObject.parent = .breedsSearch
+                        self.selectedObject.model = item
+
+                        withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
+                            self.selectedObject.isShowing = true
+
+                        }
+                    }) {
+                        BreedSearchListCell(id: item.id,
+                            name: item.name,
+                                            group: item.breedGroup,
+                                            origin: item.origin,
+                        animation: animation)
+                        .environmentObject(self.selectedObject)
+                        .listRowSeparator(.hidden)
+                    }
                 }
             }
             .edgesIgnoringSafeArea([.trailing, .leading])
@@ -36,7 +51,9 @@ struct SearchBreedsView<Model>: View where Model: BreedSearchViewModelProtocol {
 }
 
 struct SearchBreedsView_Previews: PreviewProvider {
+    @Namespace static var namespace
+
     static var previews: some View {
-        SearchBreedsView(breedSearchViewModel: BreedSearchViewModel())
+        SearchBreedsView(breedSearchViewModel: BreedSearchViewModel(), nameSpace: namespace)
     }
 }
