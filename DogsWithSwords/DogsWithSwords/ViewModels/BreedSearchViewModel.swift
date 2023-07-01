@@ -15,19 +15,39 @@ protocol BreedSearchViewModelProtocol: ObservableObject {
 
 class BreedSearchViewModel: BreedSearchViewModelProtocol {
     @Published var resultsList: [BreedModel] = BreedSearchViewModel.breedsOneResult
-    @Published var searchQuery: String = "A"
+    @Published var searchQuery: String = ""
+
+    let requestService: HttpRequestRepository
+    var offset = 0
 
     var cancellables = Set<AnyCancellable>()
 
-
     init() {
+        // TODO: DI this
+        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
 
-        self.$searchQuery
+        
+        self.searchPublisher($searchQuery)
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] query in
-            self?.resultsList = BreedSearchViewModel.breedsResult.filter { $0.name.contains(query) }
-        })
-        .store(in: &cancellables)
+            .sink { [weak self] result in
+                self?.resultsList = result
+            }
+            .store(in: &cancellables)
+    }
+
+
+    private func searchPublisher(_ text: Published<String>.Publisher) -> AnyPublisher<[BreedModel], Never> {
+        return text.debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+            .map { val in
+                if val.count > 2 {
+                    self.offset = 0
+                    return self.requestService.searchBreeds(val, offset: self.offset, limit: 10)
+                }
+
+                return Just(self.resultsList).eraseToAnyPublisher()
+            }
+            .switchToLatest()
+            .eraseToAnyPublisher()
     }
 
 #if DEBUG
@@ -36,28 +56,28 @@ class BreedSearchViewModel: BreedSearchViewModelProtocol {
                    name: "A Name",
                    breedGroup: "A Group",
                    origin: "A Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "A Category",
                    temperament: "A temperament"),
         BreedModel(id: 2,
                    name: "B Name",
                    breedGroup: "B Group",
                    origin: "B Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
         BreedModel(id: 3,
                    name: "C Name",
                    breedGroup: "C Group",
                    origin: "C Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
         BreedModel(id: 4,
                    name: "D Name",
                    breedGroup: "D Group",
                    origin: "D Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
     ]
@@ -66,7 +86,7 @@ class BreedSearchViewModel: BreedSearchViewModelProtocol {
         BreedModel(id: 1, name: "A Name",
                    breedGroup: "A Group",
                    origin: "A Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
 

@@ -16,12 +16,17 @@ struct BreedDetailView: View {
     var animation: Namespace.ID
     var model: BreedModel
 
+    let requestService: HttpRequestRepository
+
     @EnvironmentObject var selectedObject: SelectedObject
 
     init(model: BreedModel,
          animation: Namespace.ID) {
         self.model = model
         self.animation = animation
+
+        // TODO: DI this
+        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
     }
 
     var imageId: String {
@@ -39,10 +44,28 @@ struct BreedDetailView: View {
         MovableResizableView(isPresented: $selectedObject.isShowing) {
             VStack {
                 ZStack(alignment: .topTrailing) {
-                    Image("CuteDog")
-                        .resizable()
-                        .scaledToFit()
-                        .matchedGeometryEffect(id: self.imageId, in: animation)
+                    AsyncImageView(imageURL: self.model.referenceImageID,
+                                   requestService: self.requestService,
+                                   placeholder: {
+
+                        GeometryReader { geo in
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+
+                        }
+                    }, errorView: {
+                        Image("CuteDog")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
+                            .clipped()
+                    })
+                    .matchedGeometryEffect(id: self.imageId, in: animation)
+                    .scaledToFill()
+                    .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height / 2)
+                    .clipped()
+
                     Button(action: {
                         selectedObject.isShowing = false
                     }, label: {
@@ -93,6 +116,7 @@ struct BreedDetailView: View {
 
             }
             .background(.white)
+
             .cornerRadius(10)
 
         }
@@ -109,7 +133,7 @@ struct BreedDetailView_Previews: PreviewProvider {
         BreedDetailView(model: BreedModel(id: 1, name: "A Name",
                                           breedGroup: "Breed Group",
                                           origin: "Origin",
-                                          imageUrl: "URL",
+                                          referenceImageID: "URL",
                                           category: "Category",
                                           temperament: "Temperament"),
                         animation: namespace)

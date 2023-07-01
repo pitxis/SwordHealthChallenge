@@ -7,13 +7,17 @@
 
 import Foundation
 
+// MARK: - BreedListDTO
+typealias BreedListDTO = [BreedDTO]
+
 // MARK: - BreedDTO
 struct BreedDTO: Codable {
     let weight, height: Eight
     let id: Int
-    let name, bredFor, breedGroup, lifeSpan: String
-    let temperament, origin, referenceImageID: String
-    let image: BreedImage
+    let name, lifeSpan: String
+    let breedGroup, bredFor, origin, temperament: String?
+    let referenceImageID: String?
+    let image: BreedImage?
 
     enum CodingKeys: String, CodingKey {
         case weight, height, id, name

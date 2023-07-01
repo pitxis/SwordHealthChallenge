@@ -13,8 +13,8 @@ struct BreedsView<Model>: View where Model: BreedListViewModelProtocol {
 
     var animation: Namespace.ID
 
-    init(vModel: Model, animation: Namespace.ID) {
-        self._vModel = StateObject(wrappedValue: vModel)
+    init(breedViewModel: Model, animation: Namespace.ID) {
+        self._vModel = StateObject(wrappedValue: breedViewModel)
         self.animation = animation
     }
 
@@ -22,23 +22,12 @@ struct BreedsView<Model>: View where Model: BreedListViewModelProtocol {
         NavigationView {
             ListOrGrid(type: vModel.listTypeObs, {
                 ForEach(vModel.modelList, id: \.id) { item in
-                    Button(action: {
-                        self.selectedObject.model = item
-                        withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
-                            self.selectedObject.isShowing = true
-                            self.selectedObject.parent = .breedsList
-                        }
-                    }) {
-
-                            BreedsListCell(id: item.id,
-                                           name: item.name,
-                                           nameSpace: animation,
-                                           style: vModel.listTypeObs.type)
-                            .environmentObject(selectedObject)
-                        
-                    }
+                    BreedsListCell(model: item,
+                                   nameSpace: animation,
+                                   style: vModel.listTypeObs.type)
+                    .environmentObject(selectedObject)
                     .background(.yellow)
-                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0) )
+                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0) )
                     .background(.blue)
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0) )
@@ -72,7 +61,7 @@ struct BreedsView_Previews: PreviewProvider {
 
     static var previews: some View {
 
-        BreedsView(vModel: BreedListViewModel(), animation: BreedsView_Previews.animation)
+        BreedsView(breedViewModel: BreedListViewModel(), animation: BreedsView_Previews.animation)
             .environmentObject(SelectedObject())
     }
 }
@@ -108,7 +97,6 @@ struct ListOrGrid<Content: View>: View {
                             content.padding([.leading, .trailing], 4)
                         }
                     }
-
                     .background(.red)
                     .onAppear {
                         scroller.scrollTo(typeObserver.scrollTargetId, anchor: .top)

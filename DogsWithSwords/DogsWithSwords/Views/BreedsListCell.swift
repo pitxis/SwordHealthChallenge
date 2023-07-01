@@ -8,43 +8,90 @@
 import SwiftUI
 
 struct BreedsListCell: View {
-    let id: Int
-    let breedName: String
+    let model: BreedModel
     let style: ListType
     var animation: Namespace.ID
 
+    let requestService: HttpRequestRepository
+
     @EnvironmentObject var selectedObject: SelectedObject
 
-    init(id: Int, name breedName: String, nameSpace: Namespace.ID, style: ListType = .list) {
-        self.breedName = breedName
+    init(model: BreedModel, nameSpace: Namespace.ID, style: ListType = .list) {
+        self.model = model
         self.style = style
-        self.id = id
         self.animation = nameSpace
+
+        // TODO: DI this
+        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text(breedName)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Text("\(id)")
+        VStack(alignment: .leading, spacing: 0) {
+            Text(model.name)
+                .lineLimit(self.style == .list ? 1 : 2, reservesSpace: true)
+                .frame(maxWidth: .infinity, alignment: .leadingLastTextBaseline)
+                .minimumScaleFactor(0.7)
+                .padding(4)
 
-            if !(selectedObject.isShowing && selectedObject.model?.id ?? -1 == id) {
-                Image("CuteDog")
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea([.leading, .trailing])
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(5)
-                    .matchedGeometryEffect(id: "list_\(id)", in: animation)
+
+            if selectedObject.isShowing &&
+                self.selectedObject.model!.id  == model.id {
+                Rectangle().fill(.black.opacity(0.01))
+                    .frame(width: self.style == .list ?
+                           UIScreen.main.bounds.width :
+                            (UIScreen.main.bounds.width - 16) / 3,
+                           height: self.style == .list ?
+                           UIScreen.main.bounds.width * (3/5) :
+                            (UIScreen.main.bounds.width - 16) / 3)
             } else {
-                Image("CuteDog")
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea([.leading, .trailing])
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(5)
+                AsyncImageView(imageURL: model.referenceImageID,
+                               requestService: self.requestService,
+                               placeholder: {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                        .frame(maxWidth: self.style == .list ?
+                               UIScreen.main.bounds.width :
+                                (UIScreen.main.bounds.width - 16) / 3,
+                               maxHeight: self.style == .list ?
+                               UIScreen.main.bounds.width * (3/5) :
+                                (UIScreen.main.bounds.width - 16) / 3)
+                },
+                               errorView: {
+                    Image("CuteDog").scaledToFill()
+                        .frame(maxWidth: self.style == .list ?
+                               UIScreen.main.bounds.width :
+                                (UIScreen.main.bounds.width - 16) / 3,
+                               maxHeight: self.style == .list ?
+                               UIScreen.main.bounds.width * (3/5) :
+                                (UIScreen.main.bounds.width - 16) / 3)
+                        .clipped()
+                        .ignoresSafeArea(.all, edges: .all)
+                })
+
+                .matchedGeometryEffect(id: "list_\(model.id)", in: animation, isSource: false)
+                .scaledToFill()
+                .frame(maxWidth: self.style == .list ?
+                       UIScreen.main.bounds.width :
+                        (UIScreen.main.bounds.width - 16) / 3,
+                       maxHeight: self.style == .list ?
+                       UIScreen.main.bounds.width * (3/5) :
+                        (UIScreen.main.bounds.width - 16) / 3)
+                .clipped()
+                .ignoresSafeArea(.all, edges: .all)
+            }
+
+        }
+        .onTapGesture {
+            self.selectedObject.model = model
+            self.selectedObject.parent = .breedsList
+//            withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
+            withAnimation(.easeIn(duration: 0.25)) {
+                self.selectedObject.isShowing = true
+
             }
         }
+
     }
 }
 
@@ -52,7 +99,13 @@ struct BreedsListCell_Previews: PreviewProvider {
     @Namespace static var namespace
 
     static var previews: some View {
-        BreedsListCell(id: 1, name: "Breed Name", nameSpace: namespace)
-            .environmentObject(SelectedObject())
+        BreedsListCell(model: BreedModel(id: 1,
+                                         name: "Name",
+                                         breedGroup: "breedGroup",
+                                         origin: "Origin",
+                                         referenceImageID: "Image id",
+                                         category: "Category",
+                                         temperament: "Temperament"), nameSpace: namespace)
+        .environmentObject(SelectedObject())
     }
 }

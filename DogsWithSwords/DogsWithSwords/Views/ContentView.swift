@@ -20,7 +20,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            BreedsView(vModel: BreedListViewModel(), animation: animation)
+            BreedsView(breedViewModel: BreedListViewModel(), animation: animation)
                 .environmentObject(self.selectedObject)
                 .tabItem {
                     Label("List", systemImage: "list.bullet.circle")
@@ -31,7 +31,8 @@ struct ContentView: View {
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass.circle")
                 }
-        }.overlay {
+        }
+        .overlay {
             if self.selectedObject.isShowing,
                let model = self.selectedObject.model {
 

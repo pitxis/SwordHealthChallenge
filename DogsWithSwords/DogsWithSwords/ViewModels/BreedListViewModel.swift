@@ -33,9 +33,26 @@ protocol BreedListViewModelProtocol: ObservableObject {
 }
 
 class BreedListViewModel: BreedListViewModelProtocol {
-    @Published var modelList: [BreedModel] = BreedListViewModel.breeds
+    @Published var modelList: [BreedModel] = []
     @Published var listTypeObs: ListTypeObserver = ListTypeObserver()
     @Published var order: ListOrder = .asc
+
+    private var cancellables = Set<AnyCancellable>()
+
+    internal let requestService: RequestRepository
+
+    init() {
+        // TODO: DI this
+        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
+
+        self.getBreeds()
+            .receive(on: DispatchQueue.main)
+            .first(where: { $0.count > 0 })
+            .sink(receiveValue: { val in
+                self.modelList = val
+            })
+            .store(in: &cancellables)
+    }
 
     func toggleViewType() {
         listTypeObs.type = listTypeObs.type == .grid ? .list : .grid
@@ -54,30 +71,37 @@ class BreedListViewModel: BreedListViewModelProtocol {
         }
     }
 
+    private func getBreeds() -> AnyPublisher<[BreedModel], Never> {
+        return self.requestService
+                        .getBreeds()
+
+            .eraseToAnyPublisher()
+    }
+
 #if DEBUG
     static let breeds: [BreedModel] = [
         BreedModel(id: 1, name: "A Name",
                    breedGroup: "A BreedGroup",
                    origin: "A Origin",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "A category",
                    temperament: "A temperament"),
         BreedModel(id: 2, name: "B Name",
                    breedGroup: "",
                    origin: "",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
         BreedModel(id: 3, name: "C Name",
                    breedGroup: "",
                    origin: "",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: ""),
         BreedModel(id: 4, name: "D Name",
                    breedGroup: "",
                    origin: "",
-                   imageUrl: "URL",
+                   referenceImageID: "URL",
                    category: "",
                    temperament: "")
     ]

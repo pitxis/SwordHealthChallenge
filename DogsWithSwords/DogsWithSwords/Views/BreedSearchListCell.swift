@@ -9,25 +9,46 @@ import SwiftUI
 
 struct BreedSearchListCell: View {
     let id: Int
+    let imageId: String
     let name: String
     let breedGroup: String
     let origin: String
     var animation: Namespace.ID
 
-    init(id: Int, name breedName: String,
+    let requestService: HttpRequestRepository
+
+    init(id: Int,
+         imageId: String,
+         name breedName: String,
          group breedGroup: String,
-         origin: String, animation: Namespace.ID) {
+         origin: String,
+         animation: Namespace.ID) {
         self.name = breedName
+        self.imageId = imageId
         self.breedGroup = breedGroup
         self.origin = origin
         self.id = id
         self.animation = animation
+
+        // TODO: DI this
+        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
     }
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
-            Image("CuteDog")
-                .resizable()
+            AsyncImageView(imageURL: self.imageId,
+                           requestService: self.requestService,
+                           placeholder: {
+                GeometryReader { geo in
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                        .frame(width: geo.size.width, height: geo.size.width / 3)
+                }
+            },
+                           errorView: {
+                Image("CuteDog").resizable().scaledToFit()
+            })
                 .cornerRadius(40)
                 .frame(width: 80, height: 80)
                 .aspectRatio(contentMode: .fill)
@@ -35,7 +56,6 @@ struct BreedSearchListCell: View {
 
             VStack(alignment: .leading){
                 Text("Name:")
-
                 Text(self.name)
                 Text("Group:")
                 Text(self.breedGroup)
@@ -60,6 +80,11 @@ struct BreedSearchListCell_Previews: PreviewProvider {
     @Namespace static var namespace
 
     static var previews: some View {
-        BreedSearchListCell(id: 1, name: "Breed Name", group: "Group", origin: "Origin", animation: namespace)
+        BreedSearchListCell(id: 1,
+                            imageId: "",
+                            name: "Breed Name",
+                            group: "Group",
+                            origin: "Origin",
+                            animation: namespace)
     }
 }

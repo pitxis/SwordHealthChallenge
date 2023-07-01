@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct SearchBreedsView<Model>: View where Model: BreedSearchViewModelProtocol {
-    @ObservedObject var vModel: Model
+    @StateObject var vModel: Model
     @EnvironmentObject var selectedObject: SelectedObject
     var animation: Namespace.ID
 
     init(breedSearchViewModel model: Model, nameSpace: Namespace.ID) {
-        self.vModel = model
+        self._vModel = StateObject(wrappedValue: model)
         self.animation = nameSpace
     }
 
@@ -27,14 +27,14 @@ struct SearchBreedsView<Model>: View where Model: BreedSearchViewModelProtocol {
 
                         withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
                             self.selectedObject.isShowing = true
-
                         }
                     }) {
                         BreedSearchListCell(id: item.id,
-                            name: item.name,
+                                            imageId: item.referenceImageID,
+                                            name: item.name,
                                             group: item.breedGroup,
                                             origin: item.origin,
-                        animation: animation)
+                                            animation: animation)
                         .environmentObject(self.selectedObject)
                         .listRowSeparator(.hidden)
                     }

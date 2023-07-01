@@ -31,13 +31,13 @@ struct MovableResizableView<Content>: View where Content: View {
                     })
 
                         .onEnded({ value in
-
+                            self.finalScale = 1
+                            self.newPosition.height = 0
                             withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
                                 if value.translation.height > 100 {
                                     self.isPresented = false
                                 }
-                                finalScale = 1
-                                self.newPosition.height = 0
+
                             }
                         })
                 )
