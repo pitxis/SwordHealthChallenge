@@ -27,9 +27,11 @@ protocol BreedListViewModelProtocol: ObservableObject {
     var modelList: [BreedModel] { get }
     var listTypeObs: ListTypeObserver { get }
     var order: ListOrder { get }
+    var requestService: RequestRepository { get }
 
     func toggleViewType()
     func toggleOrder()
+    func onItemAppear(_ model: BreedModel)
 }
 
 class BreedListViewModel: BreedListViewModelProtocol {
@@ -39,11 +41,10 @@ class BreedListViewModel: BreedListViewModelProtocol {
 
     private var cancellables = Set<AnyCancellable>()
 
-    internal let requestService: RequestRepository
+    let requestService: RequestRepository
 
-    init() {
-        // TODO: DI this
-        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
+    init(requestService: RequestRepository) {
+        self.requestService = requestService
 
         self.getBreeds()
             .receive(on: DispatchQueue.main)
@@ -69,6 +70,10 @@ class BreedListViewModel: BreedListViewModelProtocol {
                 return $0.name > $1.name
             }
         }
+    }
+
+    public func onItemAppear(_ model: BreedModel) {
+        self.listTypeObs.scrollTargetId = model.id
     }
 
     private func getBreeds() -> AnyPublisher<[BreedModel], Never> {

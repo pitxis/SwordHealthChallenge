@@ -23,20 +23,23 @@ struct BreedsView<Model>: View where Model: BreedListViewModelProtocol {
             ListOrGrid(type: vModel.listTypeObs, {
                 ForEach(vModel.modelList, id: \.id) { item in
                     BreedsListCell(model: item,
-                                   nameSpace: animation,
-                                   style: vModel.listTypeObs.type)
+                                   nameSpace: self.animation,
+                                   style: self.vModel.listTypeObs.type,
+                                   requestService: self.vModel.requestService)
                     .environmentObject(selectedObject)
-                    .background(.yellow)
-                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0) )
-                    .background(.blue)
+                    .background(Color.background)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0) )
+                    .background(Color.detail)
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0) )
-
+                    .onAppear(perform: {
+                        self.vModel.onItemAppear(item)
+                    })
                 }
             })
             .scrollContentBackground(.hidden)
             .listStyle(GroupedListStyle())
-            .navigationTitle("Breeds")
+            .navigationTitle(AppStrings.breeds)
             .toolbar {
                 Button(action: {
                     vModel.toggleViewType()
@@ -44,12 +47,13 @@ struct BreedsView<Model>: View where Model: BreedListViewModelProtocol {
                     Image(systemName: vModel.listTypeObs.type == .grid ?
                           "line.3.horizontal" :
                             "square.grid.2x2")
+                    .foregroundColor(.accent)
                 }
                 Button(action: {
-
                     vModel.toggleOrder()
                 }) {
                     Image(systemName: vModel.order == .asc ? "arrow.down" : "arrow.up")
+                        .foregroundColor(.accent)
                 }
             }
         }
@@ -61,48 +65,8 @@ struct BreedsView_Previews: PreviewProvider {
 
     static var previews: some View {
 
-        BreedsView(breedViewModel: BreedListViewModel(), animation: BreedsView_Previews.animation)
+        BreedsView(breedViewModel: BreedListViewModel(requestService: DIContainer.httpRequestRepository),
+                   animation: BreedsView_Previews.animation)
             .environmentObject(SelectedObject())
-    }
-}
-
-struct ListOrGrid<Content: View>: View {
-    @ObservedObject var typeObserver: ListTypeObserver
-
-    let columns = [
-        GridItem(.adaptive(minimum: 120), spacing: 0)
-    ]
-
-    let content: Content
-
-    init(type: ListTypeObserver, @ViewBuilder _ content: () -> Content) {
-        self.content = content()
-        self.typeObserver = type
-    }
-
-    var body: some View {
-        ScrollViewReader { scroller in
-            if typeObserver.type == .list {
-                List {
-                    content
-                }
-                .background(.red)
-                .onAppear {
-                    scroller.scrollTo(typeObserver.scrollTargetId, anchor: .top)
-                }
-            } else {
-                HStack {
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: 0) {
-                            content.padding([.leading, .trailing], 4)
-                        }
-                    }
-                    .background(.red)
-                    .onAppear {
-                        scroller.scrollTo(typeObserver.scrollTargetId, anchor: .top)
-                    }
-                }
-            }
-        }
     }
 }

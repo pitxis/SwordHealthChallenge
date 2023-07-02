@@ -11,7 +11,7 @@ import Combine
 protocol RequestRepository {
     func getBreeds() -> AnyPublisher<[BreedModel], Never>
 
-    func searchBreeds(_ query: String, offset: Int,
+    func searchBreeds(_ query: String, page: Int,
                  limit: Int) -> AnyPublisher<[BreedModel], Never>
 
     func getImage(path: String) -> AnyPublisher<UIImage?, Never>

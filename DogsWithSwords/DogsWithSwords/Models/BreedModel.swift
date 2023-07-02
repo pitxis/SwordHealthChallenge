@@ -12,7 +12,6 @@ struct BreedModel: Identifiable, Hashable {
     let name: String
     let breedGroup: String
     let origin: String
-//    let imageUrl: String
     let category: String
     let temperament: String
     let referenceImageID: String
@@ -22,7 +21,6 @@ struct BreedModel: Identifiable, Hashable {
         self.name = dto.name
         self.breedGroup = dto.breedGroup ?? ""
         self.origin = dto.origin ?? ""
-//        self.imageUrl = dto.image?.url ?? ""
         self.category = "MISSING"
         self.temperament = dto.temperament ?? ""
         self.referenceImageID = dto.referenceImageID ?? ""

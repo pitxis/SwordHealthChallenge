@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+extension Image {
+    static let errorImage = Image("SadDog").resizable()
+    static let defaultImage = Image("HappyDog").resizable()
+}
+
 extension UIImage {
     func decodedImage() -> UIImage {
         guard let cgImage = cgImage else { return self }

@@ -13,11 +13,9 @@ import SwiftUI
 public struct HttpService<Session: APISessionProtocol,
                           ImageCache: CacheServiceProtocol>: HttpServiceProtocol where ImageCache.ObjectType == UIImage {
     private let session: Session
-
     private let imageCache: ImageCache
 
-    // TODO: DI this
-    init(session: Session, imageCache: ImageCache = DIContainer.imageCache) {
+    init(session: Session, imageCache: ImageCache) {
         self.session = session
         self.imageCache = imageCache
     }

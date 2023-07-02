@@ -19,33 +19,39 @@ struct SearchBreedsView<Model>: View where Model: BreedSearchViewModelProtocol {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(vModel.resultsList, id: \.id) { item in
-                    Button(action: {
-                        self.selectedObject.parent = .breedsSearch
-                        self.selectedObject.model = item
-
-                        withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
-                            self.selectedObject.isShowing = true
+            ZStack {
+                if vModel.resultsList.count == 0 {
+                    Text(AppStrings.searchNoResults)
+                        .dogFont(.subtitle)
+                        .foregroundColor(.text)
+                }
+                else {
+                    List {
+                        ForEach(vModel.resultsList, id: \.id) { item in
+                            BreedSearchListCell(model: item,
+                                                animation: animation,
+                                                requestService: vModel.requestService
+                            )
+                            .environmentObject(self.selectedObject)
+                            .padding(EdgeInsets(top: 0, leading: 16, bottom: 4, trailing: 16) )
+                            .background(Color.background)
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0) )
+                            .onAppear(perform: {
+                                self.vModel.onItemAppear(item)
+                            })
                         }
-                    }) {
-                        BreedSearchListCell(id: item.id,
-                                            imageId: item.referenceImageID,
-                                            name: item.name,
-                                            group: item.breedGroup,
-                                            origin: item.origin,
-                                            animation: animation)
-                        .environmentObject(self.selectedObject)
-                        .listRowSeparator(.hidden)
                     }
+
+                    .scrollContentBackground(.hidden)
+                    .listStyle(GroupedListStyle())
+                    .background(Color.background)
                 }
             }
-            .edgesIgnoringSafeArea([.trailing, .leading])
-            .scrollContentBackground(.hidden)
-            .listStyle(PlainListStyle())
-            .navigationTitle("Search Breeds")
+            .navigationTitle(AppStrings.searchBreeds)
             .navigationBarTitleDisplayMode(.large)
             .searchable(text: self.$vModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
+            .banner(data: self.vModel.bannerType, show: self.$vModel.showBanner)
         }
     }
 }
@@ -54,6 +60,8 @@ struct SearchBreedsView_Previews: PreviewProvider {
     @Namespace static var namespace
 
     static var previews: some View {
-        SearchBreedsView(breedSearchViewModel: BreedSearchViewModel(), nameSpace: namespace)
+        SearchBreedsView(breedSearchViewModel: BreedSearchViewModel(requestService: DIContainer.httpRequestRepository),
+                         nameSpace: namespace)
+        .environmentObject(SelectedObject())
     }
 }

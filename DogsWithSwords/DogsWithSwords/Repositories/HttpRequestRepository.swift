@@ -8,7 +8,6 @@
 import Combine
 import SwiftUI
 
-
 class HttpRequestRepository: RequestRepository {
     let httpService: HttpServiceProtocol
 
@@ -36,8 +35,8 @@ class HttpRequestRepository: RequestRepository {
             .eraseToAnyPublisher()
     }
 
-    func searchBreeds(_ query: String, offset: Int, limit: Int) -> AnyPublisher<[BreedModel], Never> {
-        let requestHeader = RequestBuilder.setupGet(APIPaths.search, query: query)
+    func searchBreeds(_ query: String, page: Int, limit: Int) -> AnyPublisher<[BreedModel], Never> {
+        let requestHeader = RequestBuilder.setupGet(APIPaths.search, query: query, limit: limit, page: page)
 
         guard let request = requestHeader.request else {
             return Just([]).eraseToAnyPublisher()

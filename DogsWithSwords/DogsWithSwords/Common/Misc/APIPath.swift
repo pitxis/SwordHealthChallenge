@@ -12,19 +12,19 @@ struct APIPaths {
 
     static var breeds: URL? {
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-        urlComponents?.path = "v1/breeds"
+        urlComponents?.path = "/v1/breeds"
         return urlComponents?.url
     }
 
     static var search: URL? {
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-        urlComponents?.path = "v1/breeds/search"
+        urlComponents?.path = "/v1/breeds/search"
         return urlComponents?.url
     }
 
     static func image(with id: String) -> URL? {
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-        urlComponents?.path = "v1/images/\(id)"
+        urlComponents?.path = "/v1/images/\(id)"
         return urlComponents?.url
     }
 }

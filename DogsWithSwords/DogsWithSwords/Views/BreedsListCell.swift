@@ -12,27 +12,27 @@ struct BreedsListCell: View {
     let style: ListType
     var animation: Namespace.ID
 
-    let requestService: HttpRequestRepository
+    let requestService: RequestRepository
 
     @EnvironmentObject var selectedObject: SelectedObject
 
-    init(model: BreedModel, nameSpace: Namespace.ID, style: ListType = .list) {
+    init(model: BreedModel, nameSpace: Namespace.ID, style: ListType = .list, requestService: RequestRepository) {
         self.model = model
         self.style = style
         self.animation = nameSpace
-
-        // TODO: DI this
-        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
+        self.requestService = requestService
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(model.name)
+                .dogFont(self.style == .list ? .title : .body)
+                .foregroundColor(.text)
                 .lineLimit(self.style == .list ? 1 : 2, reservesSpace: true)
                 .frame(maxWidth: .infinity, alignment: .leadingLastTextBaseline)
                 .minimumScaleFactor(0.7)
-                .padding(4)
-
+                .padding([.leading], self.style == .list ? 16 : 8)
+                .padding([.bottom], 16)
 
             if selectedObject.isShowing &&
                 self.selectedObject.model!.id  == model.id {
@@ -58,18 +58,17 @@ struct BreedsListCell: View {
                                 (UIScreen.main.bounds.width - 16) / 3)
                 },
                                errorView: {
-                    Image("CuteDog").scaledToFill()
+                    ErrorImageView()
                         .frame(maxWidth: self.style == .list ?
                                UIScreen.main.bounds.width :
                                 (UIScreen.main.bounds.width - 16) / 3,
                                maxHeight: self.style == .list ?
                                UIScreen.main.bounds.width * (3/5) :
                                 (UIScreen.main.bounds.width - 16) / 3)
-                        .clipped()
-                        .ignoresSafeArea(.all, edges: .all)
+                        
                 })
 
-                .matchedGeometryEffect(id: "list_\(model.id)", in: animation, isSource: false)
+                .matchedGeometryEffect(id: Defaults.nameGeometryKey(model.id, .breedsList), in: animation, isSource: false)
                 .scaledToFill()
                 .frame(maxWidth: self.style == .list ?
                        UIScreen.main.bounds.width :
@@ -85,13 +84,10 @@ struct BreedsListCell: View {
         .onTapGesture {
             self.selectedObject.model = model
             self.selectedObject.parent = .breedsList
-//            withAnimation(.interpolatingSpring(stiffness: 300, damping: 20)) {
             withAnimation(.easeIn(duration: 0.25)) {
                 self.selectedObject.isShowing = true
-
             }
         }
-
     }
 }
 
@@ -105,7 +101,9 @@ struct BreedsListCell_Previews: PreviewProvider {
                                          origin: "Origin",
                                          referenceImageID: "Image id",
                                          category: "Category",
-                                         temperament: "Temperament"), nameSpace: namespace)
+                                         temperament: "Temperament"),
+                       nameSpace: namespace,
+                       requestService: DIContainer.httpRequestRepository)
         .environmentObject(SelectedObject())
     }
 }

@@ -10,4 +10,6 @@ import Foundation
 
 struct DIContainer {
     static var imageCache = ImageCache<ImageCacheType>(cache: ImageCacheType())
+    static var httpService = HttpService(session: URLRequestSession(), imageCache: DIContainer.imageCache)
+    static var httpRequestRepository = HttpRequestRepository(httpService: DIContainer.httpService)
 }

@@ -16,36 +16,37 @@ class SelectedObject: ObservableObject {
 struct ContentView: View {
     @Namespace var animation
 
+    @StateObject var coordinator: CoordinatorObject = CoordinatorObject()
+//    @ObservedObject var networkMonitor: NetworkMonitor = NetworkMonitor()
     @StateObject var selectedObject: SelectedObject = SelectedObject()
 
     var body: some View {
         TabView {
-            BreedsView(breedViewModel: BreedListViewModel(), animation: animation)
+            coordinator.getBreedListView(animation: animation)
                 .environmentObject(self.selectedObject)
                 .tabItem {
-                    Label("List", systemImage: "list.bullet.circle")
+                    Label(AppStrings.list, systemImage: "list.bullet.circle")
 
                 }
-            SearchBreedsView(breedSearchViewModel: BreedSearchViewModel(), nameSpace: animation)
+            coordinator.getBreedSearchView(animation: animation)
                 .environmentObject(self.selectedObject)
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass.circle")
+                    Label(AppStrings.search, systemImage: "magnifyingglass.circle")
                 }
         }
         .overlay {
+
             if self.selectedObject.isShowing,
                let model = self.selectedObject.model {
-
-                BreedDetailView(model: model,
-                                animation: animation)
-                .environmentObject(selectedObject)
+                coordinator.getBreedDetailView(model: model, animation: animation)
+                    .environmentObject(selectedObject)
             }
-        }
+        }.banner(data: .error("No Internet Cnnection") , show: self.$coordinator.isOffline)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(coordinator: CoordinatorObject())
     }
 }

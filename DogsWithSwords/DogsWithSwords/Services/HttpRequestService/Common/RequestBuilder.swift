@@ -46,30 +46,30 @@ public struct RequestBuilder {
 
     static func setupGet(_ url: URL?,
                          query: String?,
-                         limit: Int = 10,
+                         limit: Int = Defaults.LIMIT,
                          page: Int = 0) -> HttpRequestHeader {
 
-        guard var url = url else {
+        guard var lUrl = url else {
             return HttpRequestHeader(httpError: .internalError)
         }
 
-        url.append(queryItems: [
+        lUrl.append(queryItems: [
             URLQueryItem(name: "page", value: String(page)),
         ])
 
         if limit > 0 {
-            url.append(queryItems: [
+            lUrl.append(queryItems: [
                 URLQueryItem(name: "limit", value: String(limit))
             ])
         }
 
         if let query = query {
-            url.append(queryItems: [
+            lUrl.append(queryItems: [
                 URLQueryItem(name: "q", value: query),
             ])
         }
 
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: lUrl)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(API.pubKey, forHTTPHeaderField: "x-api-key")
 

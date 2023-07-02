@@ -16,28 +16,16 @@ struct BreedDetailView: View {
     var animation: Namespace.ID
     var model: BreedModel
 
-    let requestService: HttpRequestRepository
+    let requestService: RequestRepository
 
     @EnvironmentObject var selectedObject: SelectedObject
 
     init(model: BreedModel,
-         animation: Namespace.ID) {
+         animation: Namespace.ID,
+         requestService: RequestRepository) {
         self.model = model
         self.animation = animation
-
-        // TODO: DI this
-        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
-    }
-
-    var imageId: String {
-        get {
-            switch selectedObject.parent {
-            case .breedsList, .none:
-                return "list_\(model.id)"
-            case .breedsSearch:
-                return "search_\(model.id)"
-            }
-        }
+        self.requestService = requestService
     }
 
     var body: some View {
@@ -52,16 +40,13 @@ struct BreedDetailView: View {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle())
                                 .padding()
-
                         }
                     }, errorView: {
-                        Image("CuteDog")
-                            .resizable()
-                            .scaledToFill()
+                        ErrorImageView()
                             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
-                            .clipped()
+
                     })
-                    .matchedGeometryEffect(id: self.imageId, in: animation)
+                    .matchedGeometryEffect(id: Defaults.nameGeometryKey(model.id, selectedObject.parent), in: animation)
                     .scaledToFill()
                     .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height / 2)
                     .clipped()
@@ -75,54 +60,46 @@ struct BreedDetailView: View {
                             .frame(width: 30)
                             .padding(8)
                     })
+                    .foregroundColor(.accent)
                 }
                 HStack(spacing: 4) {
-                    Text("Name")
+                    Text(AppStrings.name)
+                        .dogFont(.subtitle)
                         .frame(maxWidth: .infinity)
-                        .background(.blue)
-                    Text("Category")
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
 
+                    Text(AppStrings.origin)
+                        .dogFont(.subtitle)
+                        .frame(maxWidth: .infinity)
                 }
                 HStack(spacing: 4) {
                     Text(model.name)
+                        .dogFont(.body)
+                        .foregroundColor(.text)
                         .frame(maxWidth: .infinity)
-                        .background(.blue)
-                    Text(model.category)
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
 
-                }.padding(EdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0))
-
-                HStack(spacing: 4) {
-                    Text("Origin")
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
-                    Text("Temperament")
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
-                }
-                HStack(spacing: 4) {
                     Text(model.origin)
+                        .dogFont(.body)
+                        .foregroundColor(.text)
                         .frame(maxWidth: .infinity)
-                        .background(.blue)
-                    Text(model.temperament)
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0))
 
-                .frame(maxWidth: .infinity)
+                Text(AppStrings.temperament)
+                    .dogFont(.subtitle)
+                    .frame(maxWidth: .infinity)
 
+                Text(model.temperament)
+                    .dogFont(.body)
+                    .foregroundColor(.text)
+                    .frame(maxWidth: .infinity)
+                    .padding([.leading, .bottom, .trailing], 16)
             }
-            .background(.white)
-
-            .cornerRadius(10)
-
+            .background(Color.detail)
+            .cornerRadius(5)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black.opacity(0.9))
         .ignoresSafeArea()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background.opacity(0.95))
     }
 }
 
@@ -136,9 +113,8 @@ struct BreedDetailView_Previews: PreviewProvider {
                                           referenceImageID: "URL",
                                           category: "Category",
                                           temperament: "Temperament"),
-                        animation: namespace)
+                        animation: namespace,
+                        requestService: DIContainer.httpRequestRepository)
         .environmentObject(SelectedObject())
     }
 }
-
-

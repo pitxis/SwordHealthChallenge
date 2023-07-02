@@ -11,43 +11,85 @@ import Combine
 protocol BreedSearchViewModelProtocol: ObservableObject {
     var searchQuery: String { get set }
     var resultsList: [BreedModel] { get }
+    var requestService: RequestRepository { get }
+    var showBanner: Bool { get set }
+    var bannerType: BannerType { get }
+
+    func onItemAppear(_ model: BreedModel)
 }
 
 class BreedSearchViewModel: BreedSearchViewModelProtocol {
-    @Published var resultsList: [BreedModel] = BreedSearchViewModel.breedsOneResult
+    @Published var resultsList: [BreedModel] = []
     @Published var searchQuery: String = ""
+    @Published var state: ScrollState = .loaded
+    @Published var showBanner: Bool = false
+    @Published var bannerType: BannerType = .info("")
 
-    let requestService: HttpRequestRepository
-    var offset = 0
+    let requestService: RequestRepository
+    private var page = 0
 
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
+    private var cancellable: AnyCancellable?
 
-    init() {
-        // TODO: DI this
-        self.requestService = HttpRequestRepository(httpService: HttpService(session: URLRequestSession()))
+    private var canLoadMore: Bool = false
 
-        
+    init(requestService: RequestRepository) {
+        self.requestService = requestService
+
         self.searchPublisher($searchQuery)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
+                self?.canLoadMore = result.count == Defaults.LIMIT
                 self?.resultsList = result
             }
             .store(in: &cancellables)
     }
 
-
     private func searchPublisher(_ text: Published<String>.Publisher) -> AnyPublisher<[BreedModel], Never> {
         return text.debounce(for: .seconds(0.5), scheduler: RunLoop.main)
             .map { val in
                 if val.count > 2 {
-                    self.offset = 0
-                    return self.requestService.searchBreeds(val, offset: self.offset, limit: 10)
+                    self.page = 0
+                    return self.requestService
+                        .searchBreeds(val, page: self.page, limit: Defaults.LIMIT)
                 }
 
-                return Just(self.resultsList).eraseToAnyPublisher()
+                self.page = 0
+                return Just([]).eraseToAnyPublisher()
             }
             .switchToLatest()
             .eraseToAnyPublisher()
+    }
+
+    public func onItemAppear(_ model: BreedModel) {
+        if !canLoadMore {
+            return
+        }
+
+        if state == .loadingMore {
+            return
+        }
+
+        guard let index = resultsList.firstIndex(where: { $0.id == model.id }) else {
+            return
+        }
+
+        let thresholdIndex = max(0, resultsList.index(resultsList.endIndex, offsetBy: -2))
+        if index != thresholdIndex {
+            return
+        }
+
+        state = .loadingMore
+        cancellable?.cancel()
+        cancellable = self.requestService
+            .searchBreeds(self.searchQuery, page: self.page, limit: Defaults.LIMIT)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] res in
+                self?.state = .loaded
+                self?.page += 1
+                self?.canLoadMore = res.count == Defaults.LIMIT
+                self?.resultsList += res
+            }
     }
 
 #if DEBUG
