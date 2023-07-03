@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+@testable import DogsWithSwords
 
 struct TestStrings {
     static let breedOkString = """
@@ -105,4 +105,15 @@ struct TestStrings {
         }
     ]
     """
+}
+
+struct DefaultModels {
+
+    static let breedsModel = BreedModel(id: 1,
+                                        name: "Name",
+                                        breedGroup: "Group",
+                                        origin: "Origin",
+                                        referenceImageID: "123",
+                                        category: "Category",
+                                        temperament: "Temperament")
 }

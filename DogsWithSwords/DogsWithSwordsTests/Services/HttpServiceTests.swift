@@ -21,14 +21,10 @@ final class HttpServiceTests: XCTestCase {
 
     override func setUp() async throws {
         self.session = MockAPISession()
-        self.imgCacheWrapper = MockCacheWrapper<NSString, UIImage>()
-        self.imageCache = MockImageCacheService<MockImageCacheType>(cache: imgCacheWrapper!)
-        self.dataCacheWrapper = MockCacheWrapper<NSString, NSData>()
     }
 
     func testOkGetRequest() throws {
-        let service = HttpService(session: session!,
-                                  imageCache: imageCache!)
+        let service = HttpService(session: session!)
 
         session!.data = TestStrings.breedOkString.data(using: .utf8)!
 
@@ -45,8 +41,7 @@ final class HttpServiceTests: XCTestCase {
     }
 
     func test400Response() throws {
-        let service = HttpService(session: session!,
-                                  imageCache: imageCache!)
+        let service = HttpService(session: session!)
 
         session!.data = TestStrings.responseErrorString.data(using: .utf8)!
         session!.response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: "", headerFields: [:])!
@@ -70,8 +65,7 @@ final class HttpServiceTests: XCTestCase {
     }
 
     func testFailedResponse() throws {
-        let service = HttpService(session: session!,
-                                  imageCache: imageCache!)
+        let service = HttpService(session: session!)
 
         session!.error = URLError(.badServerResponse)
 
@@ -92,8 +86,7 @@ final class HttpServiceTests: XCTestCase {
     }
 
     func testFetchImage() {
-        let service = HttpService(session: session!,
-                                  imageCache: imageCache!)
+        let service = HttpService(session: session!)
 
         let exp = self.expectation(description: "Publishes Image then finishes")
         let data = (UIImage(systemName: "square.and.arrow.up")?.pngData())!
@@ -111,12 +104,10 @@ final class HttpServiceTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
 
         XCTAssertNotNil(resultImg)
-        XCTAssertNotNil(self.imageCache?.get(for: url))
     }
 
     func testErrorFetchImage() {
-        let service = HttpService(session: session!,
-                                  imageCache: imageCache!)
+        let service = HttpService(session: session!)
 
         let exp = self.expectation(description: "Publishes Image then finishes")
         var error: APIError?

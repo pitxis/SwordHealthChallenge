@@ -10,10 +10,10 @@ import Foundation
 public protocol CacheServiceProtocol<ObjectType>: AnyObject {
     associatedtype ObjectType
 
-    func get(for url: URL) -> ObjectType?
-    func insert(_ image: ObjectType?, for url: URL)
-    func remove(for url: URL)
+    func get(for key: String) -> ObjectType?
+    func insert(_ image: ObjectType?, for key: String)
+    func remove(for key: String)
     func removeAll()
 
-    subscript(_ url: URL) -> ObjectType? { get set }
+    subscript(_ key: String) -> ObjectType? { get set }
 }

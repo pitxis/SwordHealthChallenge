@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 @testable import DogsWithSwords
 
-public class MockCacheWrapper<Key, Value>: CustomCacheProtocol where Key: NSString, Value: AnyObject {
+public class MockCacheWrapper<Key, Value>: CustomCacheProtocol where Key: NSString,
+                                                                        Value: AnyObject {
 
     private lazy var cache = [KeyType: ObjectType]()
 

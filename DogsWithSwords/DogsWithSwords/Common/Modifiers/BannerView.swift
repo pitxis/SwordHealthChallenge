@@ -51,6 +51,13 @@ enum BannerType {
 struct BannerModifier: ViewModifier {
     @State var data: BannerType
     @Binding var show: Bool
+    var dismissable: Bool
+
+    init(data: BannerType, show: Binding<Bool>, dismissable: Bool = false) {
+        self.data = data
+        self._show = show
+        self.dismissable = dismissable
+    }
 
     func body(content: Content) -> some View {
         ZStack {
@@ -83,9 +90,11 @@ struct BannerModifier: ViewModifier {
                         self.show = false
                     }
                 }.onAppear(perform: {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        withAnimation {
-                            self.show = false
+                    if dismissable {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                self.show = false
+                            }
                         }
                     }
                 })
@@ -95,8 +104,8 @@ struct BannerModifier: ViewModifier {
 }
 
 extension View {
-    func banner(data: BannerType, show: Binding<Bool>) -> some View {
-        self.modifier(BannerModifier(data: data, show: show))
+    func banner(data: BannerType, show: Binding<Bool>, dismissable: Bool = false) -> some View {
+        self.modifier(BannerModifier(data: data, show: show, dismissable: dismissable))
     }
 }
 

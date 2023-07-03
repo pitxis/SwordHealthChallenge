@@ -10,14 +10,11 @@ import Foundation
 import Combine
 import SwiftUI
 
-public struct HttpService<Session: APISessionProtocol,
-                          ImageCache: CacheServiceProtocol>: HttpServiceProtocol where ImageCache.ObjectType == UIImage {
+public struct HttpService<Session: APISessionProtocol>: HttpServiceProtocol  {
     private let session: Session
-    private let imageCache: ImageCache
 
-    init(session: Session, imageCache: ImageCache) {
+    init(session: Session) {
         self.session = session
-        self.imageCache = imageCache
     }
 
     public func get(_ request: URLRequest) -> AnyPublisher<Data, APIError> {
@@ -32,18 +29,11 @@ public struct HttpService<Session: APISessionProtocol,
     }
 
     public func fetch(imageURL: URL) -> AnyPublisher<UIImage, APIError> {
-        if let image = imageCache.get(for: imageURL) {
-            return Just(image)
-                .setFailureType(to: APIError.self)
-                .eraseToAnyPublisher()
-        }
-
         return self.session.dataTaskPublisher(for: imageURL)
             .retry(3)
             .mapResponse()
             .tryMap { data -> UIImage in
                 if let image = UIImage(data: data) {
-                    self.imageCache.insert(image, for: imageURL)
                     return image
                 }
                 throw APIError(.cannotDecodeRawData, description: "Image Error")

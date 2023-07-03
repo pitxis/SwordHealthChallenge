@@ -27,6 +27,7 @@
 		3C8A41842A50D62700548C3D /* Coordintator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A41832A50D62700548C3D /* Coordintator.swift */; };
 		3C8A41882A50E0A700548C3D /* ErrorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A41872A50E0A700548C3D /* ErrorImageView.swift */; };
 		3C8A418C2A50E18100548C3D /* NetworkMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A418B2A50E18100548C3D /* NetworkMonitoring.swift */; };
+		3C8A418E2A51E50200548C3D /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A418D2A51E50200548C3D /* DataCache.swift */; };
 		3C93B7B82A507BFC003D484E /* DogFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C93B7B72A507BFC003D484E /* DogFont.swift */; };
 		3C93B7BB2A507C5B003D484E /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C93B7BA2A507C5B003D484E /* Color+Extension.swift */; };
 		3C93B7BD2A507C76003D484E /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C93B7BC2A507C76003D484E /* UIColor+Extension.swift */; };
@@ -35,6 +36,16 @@
 		3CA864172A4F340500094ECF /* MockCacheWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA864162A4F340500094ECF /* MockCacheWrapper.swift */; };
 		3CA864192A4F343100094ECF /* HttpServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA864182A4F343100094ECF /* HttpServiceTests.swift */; };
 		3CA8641C2A4F34BE00094ECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8641B2A4F34BE00094ECF /* Constants.swift */; };
+		3CB0531C2A52C657008D3179 /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB0531B2A52C657008D3179 /* UserDefaultsService.swift */; };
+		3CB0531E2A52C67C008D3179 /* UserDefaultsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB0531D2A52C67C008D3179 /* UserDefaultsServiceProtocol.swift */; };
+		3CB053202A52D622008D3179 /* DataCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB0531F2A52D622008D3179 /* DataCacheTests.swift */; };
+		3CB053222A52D66D008D3179 /* MockDataCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB053212A52D66D008D3179 /* MockDataCacheService.swift */; };
+		3CB053262A52DB62008D3179 /* HttpServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB053252A52DB62008D3179 /* HttpServiceMock.swift */; };
+		3CB053282A52DBA1008D3179 /* HttpRequestRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB053272A52DBA1008D3179 /* HttpRequestRepo.swift */; };
+		3CB0532A2A52DD0F008D3179 /* MockNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB053292A52DD0F008D3179 /* MockNetworkMonitor.swift */; };
+		3CB0532D2A52DD76008D3179 /* MockStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB0532C2A52DD76008D3179 /* MockStoreService.swift */; };
+		3CB053302A532166008D3179 /* BreedSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB0532F2A532166008D3179 /* BreedSearchViewModelTests.swift */; };
+		3CB053332A532235008D3179 /* MockRequestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB053322A532235008D3179 /* MockRequestRepository.swift */; };
 		3CB11C972A4C4C07007568BA /* BreedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C962A4C4C07007568BA /* BreedSearchViewModel.swift */; };
 		3CB11C992A4C729C007568BA /* BreedSearchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C982A4C729C007568BA /* BreedSearchListCell.swift */; };
 		3CB11C9B2A4C7CF6007568BA /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB11C9A2A4C7CF6007568BA /* BreedDetailView.swift */; };
@@ -104,6 +115,7 @@
 		3C8A41832A50D62700548C3D /* Coordintator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordintator.swift; sourceTree = "<group>"; };
 		3C8A41872A50E0A700548C3D /* ErrorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorImageView.swift; sourceTree = "<group>"; };
 		3C8A418B2A50E18100548C3D /* NetworkMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitoring.swift; sourceTree = "<group>"; };
+		3C8A418D2A51E50200548C3D /* DataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
 		3C93B7B72A507BFC003D484E /* DogFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogFont.swift; sourceTree = "<group>"; };
 		3C93B7BA2A507C5B003D484E /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		3C93B7BC2A507C76003D484E /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -112,6 +124,16 @@
 		3CA864162A4F340500094ECF /* MockCacheWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCacheWrapper.swift; sourceTree = "<group>"; };
 		3CA864182A4F343100094ECF /* HttpServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpServiceTests.swift; sourceTree = "<group>"; };
 		3CA8641B2A4F34BE00094ECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3CB0531B2A52C657008D3179 /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		3CB0531D2A52C67C008D3179 /* UserDefaultsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServiceProtocol.swift; sourceTree = "<group>"; };
+		3CB0531F2A52D622008D3179 /* DataCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCacheTests.swift; sourceTree = "<group>"; };
+		3CB053212A52D66D008D3179 /* MockDataCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataCacheService.swift; sourceTree = "<group>"; };
+		3CB053252A52DB62008D3179 /* HttpServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpServiceMock.swift; sourceTree = "<group>"; };
+		3CB053272A52DBA1008D3179 /* HttpRequestRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRequestRepo.swift; sourceTree = "<group>"; };
+		3CB053292A52DD0F008D3179 /* MockNetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkMonitor.swift; sourceTree = "<group>"; };
+		3CB0532C2A52DD76008D3179 /* MockStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStoreService.swift; sourceTree = "<group>"; };
+		3CB0532F2A532166008D3179 /* BreedSearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchViewModelTests.swift; sourceTree = "<group>"; };
+		3CB053322A532235008D3179 /* MockRequestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRequestRepository.swift; sourceTree = "<group>"; };
 		3CB11C962A4C4C07007568BA /* BreedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchViewModel.swift; sourceTree = "<group>"; };
 		3CB11C982A4C729C007568BA /* BreedSearchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedSearchListCell.swift; sourceTree = "<group>"; };
 		3CB11C9A2A4C7CF6007568BA /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
@@ -217,7 +239,9 @@
 		3C1454D82A4B47010051804B /* DogsWithSwordsTests */ = {
 			isa = PBXGroup;
 			children = (
+				3CB0532E2A532158008D3179 /* ViewModel */,
 				3CA8641A2A4F34B300094ECF /* Constants */,
+				3CB053232A52DB35008D3179 /* Repositories */,
 				3CA864102A4F33AC00094ECF /* Services */,
 				3C1454D92A4B47010051804B /* DogsWithSwordsTests.swift */,
 			);
@@ -308,6 +332,7 @@
 			children = (
 				3CA864112A4F33BB00094ECF /* Mocks */,
 				3CA864182A4F343100094ECF /* HttpServiceTests.swift */,
+				3CB0531F2A52D622008D3179 /* DataCacheTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -318,6 +343,7 @@
 				3CA864122A4F33D000094ECF /* MockApiSession.swift */,
 				3CA864142A4F33EB00094ECF /* MockImageCacheService.swift */,
 				3CA864162A4F340500094ECF /* MockCacheWrapper.swift */,
+				3CB053212A52D66D008D3179 /* MockDataCacheService.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -340,6 +366,51 @@
 			path = HttpRequestService;
 			sourceTree = "<group>";
 		};
+		3CB0531A2A52C632008D3179 /* UserDefaultsService */ = {
+			isa = PBXGroup;
+			children = (
+				3CB0531B2A52C657008D3179 /* UserDefaultsService.swift */,
+				3CB0531D2A52C67C008D3179 /* UserDefaultsServiceProtocol.swift */,
+			);
+			path = UserDefaultsService;
+			sourceTree = "<group>";
+		};
+		3CB053232A52DB35008D3179 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				3CB053242A52DB50008D3179 /* Mocks */,
+				3CB053272A52DBA1008D3179 /* HttpRequestRepo.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		3CB053242A52DB50008D3179 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				3CB053252A52DB62008D3179 /* HttpServiceMock.swift */,
+				3CB053292A52DD0F008D3179 /* MockNetworkMonitor.swift */,
+				3CB0532C2A52DD76008D3179 /* MockStoreService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		3CB0532E2A532158008D3179 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3CB053312A532221008D3179 /* Mocks */,
+				3CB0532F2A532166008D3179 /* BreedSearchViewModelTests.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3CB053312A532221008D3179 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				3CB053322A532235008D3179 /* MockRequestRepository.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		3CB11C9C2A4DCC95007568BA /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +424,7 @@
 		3CB11C9F2A4DCE35007568BA /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3CB0531A2A52C632008D3179 /* UserDefaultsService */,
 				3CA8641D2A50743600094ECF /* HttpRequestService */,
 				3CB11CD02A4E39A9007568BA /* CacheService */,
 			);
@@ -434,6 +506,7 @@
 				3CB11CD32A4E3A22007568BA /* CustomCacheProtocol.swift */,
 				3CB11CD52A4E3A43007568BA /* NSCacheWrapper.swift */,
 				3CB11CD72A4E3A5E007568BA /* ImageCache.swift */,
+				3C8A418D2A51E50200548C3D /* DataCache.swift */,
 			);
 			path = CacheService;
 			sourceTree = "<group>";
@@ -583,6 +656,7 @@
 				3C8A417B2A50A1D000548C3D /* ListOrGrid.swift in Sources */,
 				3C8A417F2A50AFCD00548C3D /* BannerView.swift in Sources */,
 				3CB11CB62A4DE13C007568BA /* APIPath.swift in Sources */,
+				3CB0531E2A52C67C008D3179 /* UserDefaultsServiceProtocol.swift in Sources */,
 				3CB11CAC2A4DCF99007568BA /* Publisher+Extension.swift in Sources */,
 				3C1454FB2A4B49EC0051804B /* BreedModel.swift in Sources */,
 				3CB11CA82A4DCF39007568BA /* APISessionProtocol.swift in Sources */,
@@ -597,6 +671,7 @@
 				3C1454F72A4B499F0051804B /* BreedDTO.swift in Sources */,
 				3CB11CD62A4E3A43007568BA /* NSCacheWrapper.swift in Sources */,
 				3C1454FF2A4B4DE90051804B /* BreedsListCell.swift in Sources */,
+				3C8A418E2A51E50200548C3D /* DataCache.swift in Sources */,
 				3CB11C992A4C729C007568BA /* BreedSearchListCell.swift in Sources */,
 				3CB11CCA2A4DF40E007568BA /* ImageLoader.swift in Sources */,
 				3CB11CD42A4E3A22007568BA /* CustomCacheProtocol.swift in Sources */,
@@ -610,6 +685,7 @@
 				3C1455012A4B64DC0051804B /* SearchBreedsView.swift in Sources */,
 				3CB11C972A4C4C07007568BA /* BreedSearchViewModel.swift in Sources */,
 				3CB11CA42A4DCEB6007568BA /* APIError.swift in Sources */,
+				3CB0531C2A52C657008D3179 /* UserDefaultsService.swift in Sources */,
 				3C8A41812A50B00B00548C3D /* AppStrings.swift in Sources */,
 				3CB11CA62A4DCEE6007568BA /* HttpService.swift in Sources */,
 			);
@@ -619,12 +695,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB0532A2A52DD0F008D3179 /* MockNetworkMonitor.swift in Sources */,
+				3CB053332A532235008D3179 /* MockRequestRepository.swift in Sources */,
 				3CA864172A4F340500094ECF /* MockCacheWrapper.swift in Sources */,
 				3CA864192A4F343100094ECF /* HttpServiceTests.swift in Sources */,
 				3CA864152A4F33EB00094ECF /* MockImageCacheService.swift in Sources */,
 				3C1454DA2A4B47010051804B /* DogsWithSwordsTests.swift in Sources */,
 				3CA864132A4F33D000094ECF /* MockApiSession.swift in Sources */,
+				3CB053202A52D622008D3179 /* DataCacheTests.swift in Sources */,
+				3CB053222A52D66D008D3179 /* MockDataCacheService.swift in Sources */,
+				3CB053262A52DB62008D3179 /* HttpServiceMock.swift in Sources */,
+				3CB0532D2A52DD76008D3179 /* MockStoreService.swift in Sources */,
 				3CA8641C2A4F34BE00094ECF /* Constants.swift in Sources */,
+				3CB053282A52DBA1008D3179 /* HttpRequestRepo.swift in Sources */,
+				3CB053302A532166008D3179 /* BreedSearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -785,6 +869,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -818,6 +903,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

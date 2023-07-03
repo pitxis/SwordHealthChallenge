@@ -13,9 +13,7 @@ public protocol CustomCacheProtocol<KeyType, ObjectType> {
 
     func object(forKey key: KeyType) -> ObjectType?
 
-    func setObject(_ obj: ObjectType, forKey key: KeyType) // 0 cost
-
-    func setObject(_ obj: ObjectType, forKey key: KeyType, cost: Int)
+    func setObject(_ obj: ObjectType, forKey key: KeyType)
 
     func removeObject(forKey key: KeyType)
 

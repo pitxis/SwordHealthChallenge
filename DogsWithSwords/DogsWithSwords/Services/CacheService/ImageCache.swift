@@ -24,44 +24,44 @@ public final class ImageCache<CustomCache: CustomCacheProtocol> {
 
 extension ImageCache: CacheServiceProtocol where CustomCache.KeyType == NSString,
                                                   CustomCache.ObjectType == UIImage {
-    public func get(for url: URL) -> UIImage? {
+    public func get(for key: String) -> UIImage? {
         lock.lock(); defer { lock.unlock() }
 
-        if let image = nsCache.object(forKey: url.absoluteString as NSString) {
+        if let image = nsCache.object(forKey: key as NSString) {
             let decodedImage = image.decodedImage()
             return decodedImage
         }
         return nil
     }
 
-    public func insert(_ image: UIImage?, for url: URL) {
-        guard let image = image else { return remove(for: url) }
+    public func insert(_ image: UIImage?, for key: String) {
+        guard let image = image else { return remove(for: key) }
 
-        if nsCache.object(forKey: url.absoluteString as NSString) != nil {
+        if nsCache.object(forKey: key as NSString) != nil {
             return
         }
 
         let decodedImage = image.decodedImage()
 
         lock.lock(); defer { lock.unlock() }
-        nsCache.setObject(decodedImage, forKey: url.absoluteString as NSString)
+        nsCache.setObject(decodedImage, forKey: key as NSString)
     }
 
-    public func remove(for url: URL) {
+    public func remove(for key: String) {
         lock.lock(); defer { lock.unlock() }
-        nsCache.removeObject(forKey: url.absoluteString as NSString)
+        nsCache.removeObject(forKey: key as NSString)
     }
 
     public func removeAll() {
         nsCache.removeAllObjects()
     }
 
-    public subscript(_ key: URL) -> UIImage? {
+    public subscript(_ key: String) -> UIImage? {
         get {
-            return get(for: key)
+            return get(for: key as String)
         }
         set {
-            return insert(newValue, for: key)
+            return insert(newValue, for: key as String)
         }
     }
 }

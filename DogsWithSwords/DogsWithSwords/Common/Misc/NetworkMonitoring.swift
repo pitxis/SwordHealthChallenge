@@ -5,12 +5,22 @@
 //  Created by Manuel Peixoto on 01/07/2023.
 //
 
-import SwiftUI
+
 import Combine
 import Network
 
-class NetworkMonitor: ObservableObject {
-    @Published var isOffline: Bool = false
+enum NetworkStatus {
+    case online
+    case offline
+    case undifined
+}
+
+protocol NetworkMonitorProtocol: ObservableObject {
+    func isOffline() -> AnyPublisher<NetworkStatus, Never>
+}
+
+class NetworkMonitor: NetworkMonitorProtocol {
+    @Published var status: NetworkStatus = .undifined
     private var monitor: NWPathMonitor
 
     let queue = DispatchQueue.global(qos: .background)
@@ -22,13 +32,19 @@ class NetworkMonitor: ObservableObject {
 
     private func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
-            if path.status == .satisfied {
-                    self?.isOffline = false
+            DispatchQueue.main.async {
+                if path.status == .satisfied {
+                    self?.status = .online
                 } else {
-                    self?.isOffline = true
+                    self?.status = .offline
                 }
+            }
         }
 
         monitor.start(queue: queue)
+    }
+
+    func isOffline() -> AnyPublisher<NetworkStatus, Never> {
+        self.$status.eraseToAnyPublisher()
     }
 }

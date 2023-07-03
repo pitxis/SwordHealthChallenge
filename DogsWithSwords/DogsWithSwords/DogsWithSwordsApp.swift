@@ -11,7 +11,8 @@ import SwiftUI
 struct DogsWithSwordsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(contentViewModel: ContentViewModel(networkMonitor: DIContainer.networkMonitor),
+                        coordinator: CoordinatorObject(networkMonitor: DIContainer.networkMonitor))
         }
     }
 }

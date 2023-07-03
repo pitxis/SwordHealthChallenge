@@ -15,4 +15,6 @@ protocol RequestRepository {
                  limit: Int) -> AnyPublisher<[BreedModel], Never>
 
     func getImage(path: String) -> AnyPublisher<UIImage?, Never>
+
+    func networkStatus() -> AnyPublisher<NetworkStatus, Never>
 }

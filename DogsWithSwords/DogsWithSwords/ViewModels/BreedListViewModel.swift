@@ -46,13 +46,22 @@ class BreedListViewModel: BreedListViewModelProtocol {
     init(requestService: RequestRepository) {
         self.requestService = requestService
 
-        self.getBreeds()
-            .receive(on: DispatchQueue.main)
-            .first(where: { $0.count > 0 })
-            .sink(receiveValue: { val in
-                self.modelList = val
-            })
-            .store(in: &cancellables)
+        self.requestService.networkStatus().sink(receiveValue: { [weak self] status in
+            switch status {
+                case .undifined:
+                break
+                default:
+                if let lSelf = self {
+                    lSelf.getBreeds()
+                        .receive(on: DispatchQueue.main)
+                        .sink(receiveValue: { val in
+                            lSelf.modelList = val
+                        })
+                        .store(in: &lSelf.cancellables)
+                }
+            }
+        })
+        .store(in: &cancellables)
     }
 
     func toggleViewType() {
@@ -82,33 +91,4 @@ class BreedListViewModel: BreedListViewModelProtocol {
 
             .eraseToAnyPublisher()
     }
-
-#if DEBUG
-    static let breeds: [BreedModel] = [
-        BreedModel(id: 1, name: "A Name",
-                   breedGroup: "A BreedGroup",
-                   origin: "A Origin",
-                   referenceImageID: "URL",
-                   category: "A category",
-                   temperament: "A temperament"),
-        BreedModel(id: 2, name: "B Name",
-                   breedGroup: "",
-                   origin: "",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-        BreedModel(id: 3, name: "C Name",
-                   breedGroup: "",
-                   origin: "",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-        BreedModel(id: 4, name: "D Name",
-                   breedGroup: "",
-                   origin: "",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: "")
-    ]
-#endif
 }

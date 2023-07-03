@@ -18,7 +18,7 @@ class MockImageCacheService<CustomCache: CustomCacheProtocol>: CacheServiceProto
         self.mockCache = cache
     }
 
-    subscript(key: URL) -> UIImage? {
+    subscript(key: String) -> UIImage? {
         get {
             return get(for: key)
         }
@@ -27,18 +27,18 @@ class MockImageCacheService<CustomCache: CustomCacheProtocol>: CacheServiceProto
         }
     }
 
-    func get(for url: URL) -> UIImage? {
-        return mockCache.object(forKey: url.absoluteString as NSString)
+    func get(for key: String) -> UIImage? {
+        return mockCache.object(forKey: key as NSString)
     }
 
-    func insert(_ image: UIImage?, for url: URL) {
+    func insert(_ image: UIImage?, for key: String) {
         if let img = image {
-            mockCache.setObject(img, forKey: url.absoluteString as NSString)
+            mockCache.setObject(img, forKey: key as NSString)
         }
     }
 
-    func remove(for url: URL) {
-        mockCache.removeObject(forKey: url.absoluteString as NSString)
+    func remove(for key: String) {
+        mockCache.removeObject(forKey: key as NSString)
     }
 
     func removeAll() {

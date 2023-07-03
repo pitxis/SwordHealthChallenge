@@ -11,21 +11,15 @@ import Combine
 class CoordinatorObject: ObservableObject {
     @Published var breedListViewModel: BreedListViewModel!
     @Published var searchViewModel: BreedSearchViewModel!
-    @Published var isOffline: Bool = false
 
-    var networkMonitor: NetworkMonitor = NetworkMonitor()
 
     let requestService: RequestRepository
-    var cancellables = Set<AnyCancellable>()
 
-    init() {
+
+    init(networkMonitor: NetworkMonitor) {
         self.requestService = DIContainer.httpRequestRepository
         self.breedListViewModel = BreedListViewModel(requestService: requestService)
         self.searchViewModel = BreedSearchViewModel(requestService: requestService)
-        self.networkMonitor.$isOffline.receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] val in
-            print(val)
-            self?.isOffline = val
-        }).store(in: &cancellables)
     }
 
     func getBreedListView(animation: Namespace.ID) -> AnyView? {

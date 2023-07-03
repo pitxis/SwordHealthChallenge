@@ -25,26 +25,34 @@ struct BreedSearchListCell: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            AsyncImageView(imageURL: self.model.referenceImageID,
-                           requestService: self.requestService,
-                           placeholder: {
-                GeometryReader { geo in
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .padding()
-                        .frame(width: geo.size.width, height: geo.size.width / 3)
-                }
-            },
-                           errorView: {
-                ErrorImageView()
+            if selectedObject.isShowing &&
+                self.selectedObject.model!.id  == model.id {
+                Rectangle().fill(.black.opacity(1))
                     .frame(width: 100, height: 100)
 
-            })
-            .frame(width: 100, height: 100)
-            .aspectRatio(contentMode: .fill)
-            .clipped()
-            .matchedGeometryEffect(id: Defaults.nameGeometryKey(model.id, .breedsSearch), in: animation, isSource: false)
+            } else {
+                AsyncImageView(imageURL: self.model.referenceImageID,
+                               requestService: self.requestService,
+                               placeholder: {
+                    GeometryReader { geo in
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding()
+                            .frame(width: geo.size.width, height: geo.size.width / 3)
+                    }
+                },
+                               errorView: {
+                    ErrorImageView()
+                        .frame(width: 100, height: 100)
 
+                })
+                .frame(width: 100, height: 100)
+                .aspectRatio(contentMode: .fill)
+                .clipped()
+                .matchedGeometryEffect(id: Defaults.nameGeometryKey(model.id, .breedsSearch),
+                                       in: animation,
+                                       isSource: false)
+            }
             VStack(alignment: .listRowSeparatorLeading){
                 Text(AppStrings.name)
                     .dogFont(.subtitle)
@@ -52,7 +60,6 @@ struct BreedSearchListCell: View {
                     .dogFont(.body)
                     .foregroundColor(.text)
                     .padding([.bottom], 4)
-
                 Text(AppStrings.group)
                     .dogFont(.subtitle)
                 Text(self.model.breedGroup)

@@ -30,7 +30,6 @@ class BreedSearchViewModel: BreedSearchViewModelProtocol {
 
     private var cancellables = Set<AnyCancellable>()
     private var cancellable: AnyCancellable?
-
     private var canLoadMore: Bool = false
 
     init(requestService: RequestRepository) {
@@ -91,47 +90,4 @@ class BreedSearchViewModel: BreedSearchViewModelProtocol {
                 self?.resultsList += res
             }
     }
-
-#if DEBUG
-    static let breedsResult: [BreedModel] = [
-        BreedModel(id: 1,
-                   name: "A Name",
-                   breedGroup: "A Group",
-                   origin: "A Origin",
-                   referenceImageID: "URL",
-                   category: "A Category",
-                   temperament: "A temperament"),
-        BreedModel(id: 2,
-                   name: "B Name",
-                   breedGroup: "B Group",
-                   origin: "B Origin",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-        BreedModel(id: 3,
-                   name: "C Name",
-                   breedGroup: "C Group",
-                   origin: "C Origin",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-        BreedModel(id: 4,
-                   name: "D Name",
-                   breedGroup: "D Group",
-                   origin: "D Origin",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-    ]
-
-    static let breedsOneResult: [BreedModel] = [
-        BreedModel(id: 1, name: "A Name",
-                   breedGroup: "A Group",
-                   origin: "A Origin",
-                   referenceImageID: "URL",
-                   category: "",
-                   temperament: ""),
-
-    ]
-#endif
 }
